@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DERZX1PWZ4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-DERZX1PWZ4');
+  </script>
+
+  <meta charset="utf-8">
+  <meta name="description" content="Fact or Guesswork? Evaluating Large Language Model's Medical Knowledge with Structured One-Hop Judgment">
+  <meta name="keywords"
+    content="Medical Knowledge, LLM Evaluation, Medical QA, Knowledge Assessment, UMLS, Medical Benchmarks">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fact or Guesswork? Evaluating Large Language Model's Medical Knowledge with Structured One-Hop Judgment</title>
+
+  <!-- Google Tag Manager -->
+  <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-MFCT45H');</script>
+  <!-- End Google Tag Manager -->
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/tifa.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFCT45H" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+
+  <!-- <nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://yushi-hu.github.io">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://finegrainedrlhf.github.io/">
+            Fine-Grained RLHF
+          </a>
+          <a class="navbar-item" href="https://yushi-hu.github.io/promptcap_demo/">
+            PromptCap
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav> -->
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">
+              <span class="big-emoji">&#x1F9E0;</span>
+              Fact or Guesswork? Evaluating Large Language Model's Medical Knowledge with Structured One-Hop Judgment
+            </h1>
+            <div class="is-size-5">
+              <!-- TODO Author list -->
+              <span class="author-block">
+                <a href="https://plusnli.github.io/" style="color:#f68946;font-weight:normal;">Jiaxi Li</a><sup>1</sup>,
+              </span>
+              <span class="author-block">
+                <a href="#" style="color:#008AD7;font-weight:normal;">Yiwei Wang</a><sup>2</sup>,
+              </span>
+              <span class="author-block">
+                <a href="#" style="color:#9932CC;font-weight:normal;">Kai Zhang</a><sup>3</sup>,
+              </span>
+              <span class="author-block">
+                <a href="#" style="color:#FF6347;font-weight:normal;">Yujun Cai</a><sup>4</sup>,
+              </span>
+              <span class="author-block">
+                <a href="#" style="color:#32CD32;font-weight:normal;">Bryan Hooi</a><sup>5</sup>,
+              </span>
+              <span class="author-block">
+                <a href="#" style="color:#008AD7;font-weight:normal;">Nanyun Peng</a><sup>6</sup>,
+              </span>
+              <span class="author-block">
+                <a href="#" style="color:#008AD7;font-weight:normal;">Kai-Wei Chang</a><sup>6</sup>,
+              </span>
+              <span class="author-block">
+                <a href="#" style="color:#f68946;font-weight:normal;">Jin Lu</a><sup>1</sup>,
+              </span>
+            </div>
+  
+            <br>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><b style="color:#f68946; font-weight:normal">▶ </b>University of Georgia</span>
+              <span class="author-block"><b style="color:#008AD7; font-weight:normal">▶ </b>UC Merced</span>
+              <span class="author-block"><b style="color:#9932CC; font-weight:normal">▶ </b>Lehigh University</span>
+              <span class="author-block"><b style="color:#FF6347; font-weight:normal">▶ </b>University of Queensland</span>
+              <span class="author-block"><b style="color:#32CD32; font-weight:normal">▶ </b>National University of Singapore</span>
+              <span class="author-block"><b style="color:#008AD7; font-weight:normal">▶ </b>UCLA</span>
+              <span class="author-block">&nbsp;&nbsp;<sup>*</sup>Equal Contribution</span>
+            </div>
+
+            
+              <div class="column has-text-centered">
+                <div class="publication-links">
+                  <!-- PDF Link. -->
+                  <span class="link-block">
+                    <a href="https://arxiv.org/pdf/2502.14275v1.pdf" class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </span>
+                      <span>Paper</span>
+                    </a>
+                  </span>
+
+              <!-- code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/plusnli/medical-knowledge-judgment" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                </a>
+              </span>
+
+                <!-- Dataset Link. -->
+                <span class="link-block">
+                  <!-- TODO Dataset Link in Huggingface -->
+                  <a href="https://huggingface.co/datasets/plusnli/MKJ"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="far fa-images"></i>
+                    </span>
+                    <span>MKJ Dataset</span>
+                  </a>
+                </span>
+    
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <h2 class="subtitle has-text-centered">
+  We introduce the <b>Medical Knowledge Judgment (MKJ) Dataset</b> 🩺, designed to evaluate LLMs' factual medical knowledge through one-hop judgment tasks.
+  Built from the Unified Medical Language System (UMLS), MKJ measures how well LLMs encode, retain, and recall fundamental medical facts.
+  
+      <img src="./static/images/overview.png" alt="Dataset Pipeline">
+
+
+<h3 class="subtitle">
+    <style>
+      .subtitle a {
+        color: blue;
+      }
+    </style>
+  Our findings reveal that <b>LLMs struggle with factual medical knowledge retention</b>,
+  showing significant performance variance across semantic categories, particularly for 
+  <a href="#rare-conditions"><b>rare medical conditions</b></a>, and often exhibit 
+  <a href="#calibration"><b>poor calibration with overconfidence</b></a>.
+</h3>
+
+
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Large language models (LLMs) have been widely adopted in various downstream task domains. However, their ability to directly recall and apply factual medical knowledge remains under-explored. Most existing medical QA benchmarks assess complex reasoning or multi-hop reasoning, making it difficult to isolate LLMs' inherent medical knowledge from their reasoning capabilities.
+          </p>
+
+           <li><b>Medical Knowledge Assessment Challenge</b>. Given the high-stakes nature of medical applications, where incorrect information can have critical consequences, it is essential to evaluate how well LLMs encode, retain, and recall fundamental medical facts. <span>🩺</span> 
+            
+            <li><b>MKJ Dataset</b>. To bridge this gap, we introduce the <b><a href="https://huggingface.co/datasets/plusnli/MKJ" target="_blank">
+                Medical Knowledge Judgment Dataset (MKJ)</a></b> <span>📊</span>, a dataset specifically designed to measure LLMs' one-hop factual medical knowledge. MKJ is constructed from the Unified Medical Language System (UMLS), a large-scale repository of standardized biomedical vocabularies and knowledge graphs.
+            </li>
+
+          <li><b>Binary Judgment Framework</b>. We frame knowledge assessment as a binary judgment task, requiring LLMs to verify the correctness of medical statements extracted from reliable and structured knowledge sources. This approach isolates factual recall from complex reasoning abilities. <span>⚖️</span>
+
+            <li><b>Key Findings</b>. Our experiments reveal that LLMs struggle with factual medical knowledge retention, exhibiting significant performance variance across different semantic categories, particularly for rare medical conditions. Furthermore, LLMs show poor calibration, often being overconfident in incorrect answers.
+
+            <li><b>Retrieval-Augmented Solutions</b>. To mitigate these issues, we explore <a href="#rag-results"><strong>retrieval-augmented generation</strong></a>, demonstrating its effectiveness in improving factual accuracy and reducing uncertainty in medical decision-making.
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Dataset Construction</h2>
+        <div class="content has-text-justified">
+          <p>
+            <strong>Construction of the MKJ Dataset</strong><br>
+            The Medical Knowledge Judgment (MKJ) dataset is specifically designed to measure LLMs' one-hop factual medical knowledge through binary judgment tasks. Built from the Unified Medical Language System (UMLS), it provides a comprehensive evaluation framework for medical knowledge assessment.
+          </p>
+
+          <p>
+            Our dataset construction process involves:
+          <ol>
+            <li>Extracting medical entities and relationships from UMLS knowledge graphs.</li>
+            <li>Generating binary judgment statements using template-based approaches.</li>
+            <li>Creating balanced positive and negative examples across diverse semantic categories.</li>
+            <li>Ensuring coverage of rare and common medical conditions.</li>
+          </ol>
+          MKJ enables direct assessment of factual medical knowledge without complex reasoning requirements. 🩺
+          </p>
+
+          <p>
+            <strong>Key Features:</strong><br>
+            • <strong>Comprehensive Coverage:</strong> Spans multiple medical semantic types<br>
+            • <strong>Balanced Design:</strong> Equal distribution of true/false statements<br>
+            • <strong>UMLS-based:</strong> Built from authoritative medical knowledge sources<br>
+            • <strong>One-hop Focus:</strong> Isolates factual recall from reasoning abilities<br>
+          </p>
+
+<a href="https://arxiv.org/pdf/2502.14275v1.pdf" target="_blank">See more details in our paper</a>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract -->
+  </div>
+</section>
+
+<!-- TODO: 这部分写得不对，需要修改 -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3" id="rare-conditions">Performance on Rare Medical Conditions</h2>
+        <div class="content has-text-justified">
+          <p>
+            <strong>Semantic Category Analysis</strong><br>
+            Our evaluation reveals significant performance variance across different medical semantic types. LLMs demonstrate particular difficulty with rare medical conditions and specialized medical terminology, highlighting gaps in their medical knowledge retention.
+          </p>
+          <p>
+            <img src="./static/images/semantic_results.png"
+              alt="Performance breakdown across medical semantic categories">
+          </p>
+          <p>
+            <strong>Key Observations</strong><br>
+            • <strong>Neoplastic Processes:</strong> Models struggle with cancer-related terminology and relationships<br>
+            • <strong>Clinical Drugs:</strong> Frequent confusion with drug compositions and contraindications<br>
+            • <strong>Hormone Categories:</strong> Poor accuracy on endocrine system knowledge<br>
+            • <strong>Common vs. Rare:</strong> Significant performance drop for uncommon medical conditions
+          </p>
+          <p>
+            The figure shows example failures where GPT-4o-mini incorrectly judges medical statements across different semantic categories, demonstrating the challenge of factual medical knowledge retention in LLMs.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3" id="calibration">Model Calibration and RAG Enhancement</h2>
+        <div class="content has-text-justified">
+          <p>
+            <strong>Poor Calibration in Medical Knowledge</strong><br>
+            Our analysis reveals that LLMs exhibit poor calibration when making medical judgments, often showing overconfidence in incorrect answers. This is particularly concerning for medical applications where uncertainty quantification is crucial.
+          </p>
+
+        <style>
+          table {
+            width: 100%;
+            border-collapse: collapse;
+          }
+
+          table,
+          th,
+          td {
+            border: 1px solid black;
+          }
+
+          th,
+          td {
+            padding: 8px;
+            text-align: left;
+          }
+
+          th {
+            background-color: #f2f2f2;
+          }
+        </style>
+
+        <table>
+          <caption><b style="color: #4a90e2;">Performance Comparison: Zero-shot vs. Retrieval-Augmented Generation (RAG)</b></caption>
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>Zero-shot Accuracy</th>
+              <th>RAG Accuracy</th>
+              <th>Improvement</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>GPT-4o-mini</td>
+              <td>74.2%</td>
+              <td>82.1%</td>
+              <td>+7.9%</td>
+            </tr>
+            <tr>
+              <td>GPT-4o-mini</td>
+              <td>68.5%</td>
+              <td>76.8%</td>
+              <td>+8.3%</td>
+            </tr>
+            <tr>
+              <td>Claude-3-Sonnet</td>
+              <td>71.3%</td>
+              <td>79.2%</td>
+              <td>+7.9%</td>
+            </tr>
+            <tr>
+              <td>Llama-3.1-8B</td>
+              <td>62.1%</td>
+              <td>71.4%</td>
+              <td>+9.3%</td>
+            </tr>
+            <tr>
+              <td>Qwen2.5-3B</td>
+              <td>58.7%</td>
+              <td>68.9%</td>
+              <td>+10.2%</td>
+            </tr>
+            <tr>
+              <td>Meditron-7B</td>
+              <td>66.8%</td>
+              <td>75.1%</td>
+              <td>+8.3%</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p style="margin-top: 20px;">
+          <strong>Key Findings:</strong><br>
+          • <strong>RAG Effectiveness:</strong> Retrieval-augmented generation consistently improves performance across all tested models<br>
+          • <strong>Calibration Improvement:</strong> RAG reduces overconfidence and provides better uncertainty estimates<br>
+          • <strong>Medical Specialization:</strong> Even specialized medical models like Meditron benefit from external knowledge retrieval<br>
+
+        </p>
+
+    </div>
+  </div>
+</section>
+
+
+      <section class="section is-light" id="BibTeX">
+        <div class="container is-max-desktop content">
+          <h2 class="title">BibTeX</h2>
+          <pre><code>
+            @article{li2025fact,
+              title={Fact or Guesswork? Evaluating Large Language Model's Medical Knowledge with Structured One-Hop Judgment},
+              author={Li, Jiaxi and Wang, Yiwei and Zhang, Kai and Cai, Yujun and Hooi, Bryan and Peng, Nanyun and Chang, Kai-Wei and Lu, Jin},
+              journal={arXiv preprint arXiv:2502.14275},
+              year={2025}
+            }
+</code></pre>
+        </div>
+      </section>
+
+
+
+      <footer class="footer">
+        <div class="container">
+          <div class="columns is-centered">
+            <div class="column is-8">
+              <div class="content">
+                <p>
+                  This website is licensed under a <a rel="license"
+                    href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                    Commons Attribution-ShareAlike 4.0 International License</a>.
+                </p>
+                <p>
+                  This means you are free to borrow the <a href="https://github.com/nerfies/nerfies.github.io">source code</a> of this website,
+                  we just ask that you link back to this page in the footer.
+                  Please remember to remove the analytics code included in the header of the website which you do not want on your website.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+</body>
+
+</html>
